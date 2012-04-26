@@ -1,0 +1,9 @@
+log.properties.file=log4j.properties
+mds.server.ip=125.17.127.103
+mds.server.port=443
+mds.account.id=DS0097-13906
+mds.account.portfolio=Test
+recv.timeout=60000
+vds.windowSize=900
+
+

@@ -98,7 +98,7 @@ public class MarketDataService implements Runnable{
 		long startTime = 0;
 		try{
 			startTime = df.parse(todayStr + " 09:15").getTime();
-			stopTime = df.parse(todayStr + " 16:35").getTime();
+			stopTime = df.parse(todayStr + " 15:35").getTime();
 			long sleepFor = startTime - new Date().getTime();
 			if(sleepFor > 0){
 				__logger.info("Will sleep for " + sleepFor);

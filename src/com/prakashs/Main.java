@@ -26,10 +26,6 @@ public class Main {
 
 		Runnable instance = (Runnable)Class.forName(args[1]).newInstance();
 		new Thread(instance).run();
-		//Pattern p = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}.[a-zA-z]+.log");
-		//System.out.println(p.matcher(args[0]).matches());
-		
-		//new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse("Tue Sep 06 09:17:11 IST 2011");
 		
 	}
 

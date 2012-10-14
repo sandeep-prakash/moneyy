@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+import java.util.HashMap;
 import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
@@ -20,6 +21,7 @@ import org.apache.log4j.Logger;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.dsl.EventHandlerGroup;
 import com.omnesys.mw.classes.CIndexStruct;
 import com.omnesys.mw.classes.CScripInfo;
 import com.omnesys.mw.classes.CSensexInfo;
@@ -46,6 +48,7 @@ public class MarketDataService implements Runnable{
 	
 	private ObjectInputStream inStream;
 	private Date exchangeTime;
+	private HashMap<String, String> symbolMap;
 	
 	public MarketDataService() throws Exception{
 		
@@ -95,7 +98,7 @@ public class MarketDataService implements Runnable{
 		long startTime = 0;
 		try{
 			startTime = df.parse(todayStr + " 09:15").getTime();
-			stopTime = df.parse(todayStr + " 15:35").getTime();
+			stopTime = df.parse(todayStr + " 16:35").getTime();
 			long sleepFor = startTime - new Date().getTime();
 			if(sleepFor > 0){
 				__logger.info("Will sleep for " + sleepFor);
@@ -114,8 +117,6 @@ public class MarketDataService implements Runnable{
 			System.exit(0);
 		}
 		
-		
-		initDisruptor();
 		while(new Date().getTime() < stopTime){
 			try{
 				CStreamData oData = ((CStreamData)inStream.readObject());
@@ -129,10 +130,13 @@ public class MarketDataService implements Runnable{
 				
 				else if(oData.iMsgCode == 0){
 					Object [] scrips = (Object[])(Object[])oData.oStreamObj;
+					symbolMap = new HashMap<String, String>();
 					for(int i = 0; i < scrips.length; i++){
 						CScripInfo scrip = (CScripInfo)scrips[i];	
 						__symLogger.info(scrip.oExchange + "," + scrip.oScripNo +","+scrip.sTradingSym+","+scrip.oSymbol);
+						symbolMap.put(scrip.sTradingSym, scrip.oScripNo);
 					}
+					initDisruptor();
 				}
 				
 				else if(oData.iMsgCode == 2){
@@ -157,7 +161,7 @@ public class MarketDataService implements Runnable{
 					__logger.warn("Unknown code: " + oData.iMsgCode);					
 				}
 				
-				publish(oData);   
+				if(ringBuffer != null) publish(oData);   
 				
 			}catch(Exception ex){
 				__logger.error(ex.getMessage(), ex);
@@ -259,11 +263,20 @@ public class MarketDataService implements Runnable{
 	private RingBuffer<CStreamData> ringBuffer;
 	private void initDisruptor(){
 		Disruptor<CStreamData> disruptor =
-				  new Disruptor<CStreamData>(EVENT_FACTORY, 1024, Executors.newCachedThreadPool(), 
-				                                       com.lmax.disruptor.ClaimStrategy.Option.SINGLE_THREADED,
-				                                       com.lmax.disruptor.WaitStrategy.Option.YIELDING);
-		disruptor.handleEventsWith(new VolatilityDifference("49072","43537", 5200),
-				new VolatilityDifference("49074","43539", 5300));
+				  new Disruptor<CStreamData>(EVENT_FACTORY, 1024, Executors.newCachedThreadPool());
+		String[] instruments = Main.PROPERTIES.getProperty("vds.instruments").split(";");
+		EventHandlerGroup<CStreamData> handler = null; 
+		for(String s: instruments){
+			String[] keys = s.split(",");
+			int strike = Integer.parseInt(keys[0].substring(3, 7));
+			String nmScrip = symbolMap.get("NIFTY12"+keys[0]);
+			String fmScrip = symbolMap.get("NIFTY12"+keys[1]);
+			__logger.info("Creating VolatilityDifference Strategy with " + nmScrip + ", "+fmScrip + ", " + strike);
+			VolatilityDifference vds = new VolatilityDifference(nmScrip, fmScrip, strike);
+			handler = disruptor.handleEventsWith(vds);
+			__logger.info("Strategy added.."+vds.toString());
+		}
+		
 		ringBuffer = disruptor.start();
 	}
 	
@@ -280,4 +293,5 @@ public class MarketDataService implements Runnable{
 			return new CStreamData();
 		}
     };
+	
 }

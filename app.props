@@ -1,9 +1,13 @@
 log.properties.file=log4j.properties
-mds.server.ip=125.17.127.103
+mds.server.ip=115.113.104.96
 mds.server.port=443
 mds.account.id=DS0097-13906
 mds.account.portfolio=Test
 recv.timeout=60000
 vds.windowSize=900
+vds.instruments=MAY5100CE,JUN5100CE;MAY5200CE,JUN5200CE
+mds.servletpath=https://www.now-online.in/NOW/servlet/
+
+
 
 

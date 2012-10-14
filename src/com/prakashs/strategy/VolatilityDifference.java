@@ -45,8 +45,8 @@ public class VolatilityDifference implements EventHandler<CStreamData> {
 	private int nmTicks = 0;
 	private int fmTicks = 0;
 	
-	private Date nmExDate = new Date(23,2,2012);
-	private Date fmExDate = new Date(29,3,2012);
+	private Date nmExDate = new Date(31,5,2012);
+	private Date fmExDate = new Date(28,6,2012);
 	
 	private String nmKey="45118";
 	private String fmKey="52649";
@@ -92,12 +92,18 @@ public class VolatilityDifference implements EventHandler<CStreamData> {
     		ex.printStackTrace();
     	}
     }
+	
+	public VolatilityDifference(String nmKey, Date nmExDate, String fmKey, Date fmExDate, int strike){
+    	this(nmKey, fmKey, strike);
+		this.nmExDate = nmExDate;
+		this.fmExDate = fmExDate;
+    }
 
 	@Override
 	public void onEvent(CStreamData oData, long sequence, boolean endOfBatch)
 			throws Exception {
 		
-		//System.out.println("Event received...");
+		//__logger.info("Event received..." + nmKey);
 		
 		if(oData.iMsgCode == 1){
 			CTouchLineInfo tick = ((CTouchLineInfo)oData.oStreamObj);
@@ -186,6 +192,7 @@ public class VolatilityDifference implements EventHandler<CStreamData> {
 					}
 				}
 			}catch(Exception ex){
+				//__logger.error("Error while calculating IV for 
 				ex.printStackTrace();
 			}
 		}

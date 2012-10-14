@@ -41,4 +41,8 @@ public class UniversalTester {
 		System.out.println(VolatilityDifference.impliedVolatility("call", 4887.45, 4900, Date.todaysDate(), new Date(27,10,2011), 0.0925, 0, 124.2));
 		System.out.println(VolatilityDifference.impliedVolatility("call", 4887.45, 4900, Date.todaysDate(), new Date(24,11,2011), 0.0925, 0, 213.9));
 	}
+	
+	private static void testPlaceOrder() throws Exception {
+		
+	}
 }

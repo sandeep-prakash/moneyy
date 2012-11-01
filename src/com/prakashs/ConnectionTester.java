@@ -27,70 +27,73 @@ public class ConnectionTester {
 	 */
 	public static void main(String[] args) throws Exception{
 		
-		String serverIP = "125.17.127.101";
-		int port = 443;
+		String serverIP = "trade.zerodha.com";
+		int port = 5001;
 		
 		//connectAlt();
-		sendOrder();
+		//sendOrder();
+		System.out.println("Trying to connect...");
 		
-//		Socket socket = new Socket(InetAddress.getByName(serverIP), port);
-//		
-//		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-//		ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-//		//System.out.println("got InPutStream--");
-//		
-//		CServerRequest sRequest = new CServerRequest();
-//		sRequest.iReqType = 0;
-//		sRequest.oAccountId = "DS0097-13906";
-//		sRequest.sPortfolio = "Test";
-//		sRequest.iDDInteractive = 0;
-//		
-//		out.writeObject(sRequest);
-//		out.flush();
-//		System.out.println("Request placed to server...please wait");
-//		
-//		while(true){
-//			try{
-//				CStreamData oData = ((CStreamData)ois.readObject());
-//				//if(oData != null) System.out.println("Message Code: " + oData.iMsgCode);
-//				
-//				if(oData.iMsgCode == 462){
-//					//String s = ((Vector)oData.oStreamObj).elementAt(0).toString();
-//					//System.out.println(s);
-//				}
-//				
-//				else if(oData.iMsgCode == 1){
-//					CTouchLineInfo oTouchLine = ((CTouchLineInfo)oData.oStreamObj);
-//					System.out.println(toString(oTouchLine));
-//				}
-//				
-//				else if(oData.iMsgCode == 0){
-//					Object [] scrips = (Object[])(Object[])oData.oStreamObj;
-//					System.out.println("Scrip-Trading Sym Map");
-//					for(int i = 0; i < scrips.length; i++){
-//						CScripInfo scrip = (CScripInfo)scrips[i];	
-//						System.out.println(scrip.oExchange + "," + scrip.oScripNo +","+scrip.sTradingSym+","+scrip.oSymbol+",SN:"+scrip.oScripName+",Type:"+scrip.sOptionType+",ED:"+scrip.iExpiryDate+",SP:"+scrip.iStrikePrice+",BLQ:"+scrip.iBoardLotQty+",shp:"+scrip.shPrecision);
-//					}
-//				}
-//				
-//				else if(oData.iMsgCode == 2){
-//					CSensexInfo oSensex = ((CSensexInfo)oData.oStreamObj);
-//					System.out.println(toString(oSensex));
-//				}
-//				
-//				else if(oData.iMsgCode == 4){
-//					exchangeTime = (Date)oData.oStreamObj;
-//				}
-//				
-//				else{
-//					System.err.println(new Date() + ": Unknown code " + oData.iMsgCode);
-//				}
-//			}catch(Exception ex){
-//				System.err.println(new Date() + ":" + ex.getMessage());
-//				ex.printStackTrace(System.err);
-//				//System.out.println(ex.getMessage());
-//			}
-//		}
+		Socket socket = new Socket(InetAddress.getByName(serverIP), port);
+		
+		System.out.println("Connected...");
+		
+		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+		System.out.println("Streams obtained...");
+		
+		CServerRequest sRequest = new CServerRequest();
+		sRequest.iReqType = 0;
+		sRequest.oAccountId = "DS0097";
+		sRequest.sPortfolio = "Test";
+		sRequest.iDDInteractive = 0;
+		
+		out.writeObject(sRequest);
+		out.flush();
+		System.out.println("Request placed to server...please wait");
+		
+		while(true){
+			try{
+				CStreamData oData = ((CStreamData)ois.readObject());
+				//if(oData != null) System.out.println("Message Code: " + oData.iMsgCode);
+				
+				if(oData.iMsgCode == 462){
+					//String s = ((Vector)oData.oStreamObj).elementAt(0).toString();
+					//System.out.println(s);
+				}
+				
+				else if(oData.iMsgCode == 1){
+					CTouchLineInfo oTouchLine = ((CTouchLineInfo)oData.oStreamObj);
+					System.out.println(toString(oTouchLine));
+				}
+				
+				else if(oData.iMsgCode == 0){
+					Object [] scrips = (Object[])(Object[])oData.oStreamObj;
+					System.out.println("Scrip-Trading Sym Map");
+					for(int i = 0; i < scrips.length; i++){
+						CScripInfo scrip = (CScripInfo)scrips[i];	
+						System.out.println(scrip.oExchange + "," + scrip.oScripNo +","+scrip.sTradingSym+","+scrip.oSymbol+",SN:"+scrip.oScripName+",Type:"+scrip.sOptionType+",ED:"+scrip.iExpiryDate+",SP:"+scrip.iStrikePrice+",BLQ:"+scrip.iBoardLotQty+",shp:"+scrip.shPrecision);
+					}
+				}
+				
+				else if(oData.iMsgCode == 2){
+					CSensexInfo oSensex = ((CSensexInfo)oData.oStreamObj);
+					System.out.println(toString(oSensex));
+				}
+				
+				else if(oData.iMsgCode == 4){
+					exchangeTime = (Date)oData.oStreamObj;
+				}
+				
+				else{
+					System.err.println(new Date() + ": Unknown code " + oData.iMsgCode);
+				}
+			}catch(Exception ex){
+				System.err.println(new Date() + ":" + ex.getMessage());
+				ex.printStackTrace(System.err);
+				System.exit(0);
+			}
+		}
 
 	}
 	

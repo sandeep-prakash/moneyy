@@ -77,11 +77,23 @@ public class MarketDataService implements Runnable{
 		__logger.debug("Request for market data placed...");
 		
 		sRequest = new CServerRequest();
-		sRequest.iReqType = 451;
-		sRequest.oAccountId = Main.PROPERTIES.getProperty("mds.account.id");;
+		sRequest.iReqType = 463;
+		sRequest.oAccountId = Main.PROPERTIES.getProperty("mds.account.id");
+		sRequest.sPortfolio = Main.PROPERTIES.getProperty("mds.account.portfolio");
 		sRequest.iDDInteractive = 0;
-		sRequest.sPortfolio = "S&P CNX Nifty";
-		sRequest.sExchange = "nse_cm";
+		
+		out.writeObject(sRequest);
+		out.flush();
+		
+		__logger.debug("Request to change MW placed...");
+		
+		
+		sRequest = new CServerRequest();
+		sRequest.iReqType = 451;
+		sRequest.oAccountId = Main.PROPERTIES.getProperty("mds.account.id");
+		sRequest.iDDInteractive = 0;
+		sRequest.sPortfolio = Main.PROPERTIES.getProperty("mds.index.portfolio");
+		sRequest.sExchange = Main.PROPERTIES.getProperty("mds.index.exchange");
 		
 		out.writeObject(sRequest);
 		out.flush();
@@ -136,7 +148,7 @@ public class MarketDataService implements Runnable{
 						__symLogger.info(scrip.oExchange + "," + scrip.oScripNo +","+scrip.sTradingSym+","+scrip.oSymbol);
 						symbolMap.put(scrip.sTradingSym, scrip.oScripNo);
 					}
-					initDisruptor();
+					//initDisruptor();
 				}
 				
 				else if(oData.iMsgCode == 2){

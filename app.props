@@ -1,8 +1,10 @@
 log.properties.file=log4j.properties
-mds.server.ip=115.113.104.96
-mds.server.port=443
-mds.account.id=DS0097-13906
-mds.account.portfolio=Test
+mds.server.ip=trade.zerodha.com
+mds.server.port=5001
+mds.account.id=DS0097
+mds.account.portfolio=Options
+mds.index.portfolio=CNX Nifty
+mds.index.exchange=nse_cm
 recv.timeout=60000
 vds.windowSize=900
 vds.instruments=MAY5100CE,JUN5100CE;MAY5200CE,JUN5200CE

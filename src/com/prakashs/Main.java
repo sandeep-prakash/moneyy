@@ -27,6 +27,10 @@ public class Main {
 		Runnable instance = (Runnable)Class.forName(args[1]).newInstance();
 		new Thread(instance).run();
 		
+//		long time = 1353384963;
+//		System.out.println(new Date(time*1000).toString());
+//		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse("2012-11-20 09:30").getTime());
+		
 	}
 
 }

@@ -207,7 +207,7 @@ public class MarketDataService implements Runnable{
 	
 	private String toString(CTouchLineInfo tick){
 		StringBuffer sb = new StringBuffer();
-		sb.append(exchangeTime);
+		sb.append(exchangeTime.getTime());
 		sb.append(",");
 		sb.append(tick.oScripNo);
 		sb.append(",");
@@ -237,7 +237,7 @@ public class MarketDataService implements Runnable{
 	private String toString(CSensexInfo info){
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append(exchangeTime);
+		sb.append(exchangeTime.getTime());
 		sb.append(",");
 		sb.append(info.oName);
 		sb.append(",");

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/lib/disruptor-2.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/jquantlib-0.2.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/log4j-1.2.16.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/postgresql-9.0-801.jdbc4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/twitter4j-core-2.2.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/sNestExpress1.22.10.0.jar!/" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/build" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module-library">
+      <library name="disruptor-2.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/disruptor-2.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jquantlib-0.2.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/jquantlib-0.2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="log4j-1.2.16.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/log4j-1.2.16.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="postgresql-9.0-801.jdbc4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/postgresql-9.0-801.jdbc4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="twitter4j-core-2.2.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/twitter4j-core-2.2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sNestExpress1.22.10.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/sNestExpress1.22.10.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+

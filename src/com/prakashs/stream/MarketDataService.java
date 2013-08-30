@@ -11,23 +11,19 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 import java.util.HashMap;
 import java.util.concurrent.Executors;
 
+import com.omnesys.mw.classes.*;
 import org.apache.log4j.Logger;
 
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.EventHandlerGroup;
-import com.omnesys.mw.classes.CIndexStruct;
-import com.omnesys.mw.classes.CScripInfo;
-import com.omnesys.mw.classes.CSensexInfo;
-import com.omnesys.mw.classes.CServerRequest;
-import com.omnesys.mw.classes.CStreamData;
-import com.omnesys.mw.classes.CTouchLineInfo;
 import com.prakashs.Main;
 import com.prakashs.strategy.Box;
 import com.prakashs.strategy.VolatilityDifference;
@@ -103,13 +99,17 @@ public class MarketDataService implements Runnable{
 
 	@Override
 	public void run() {
+
+        int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        if(dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) System.exit(0);
+
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String todayStr = df.format(new Date());
 		df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		long stopTime = 0;
 		long startTime = 0;
 		try{
-			startTime = df.parse(todayStr + " 09:15").getTime();
+			startTime = df.parse(todayStr + " 09:17").getTime();
 			stopTime = df.parse(todayStr + " 15:35").getTime();
 			long sleepFor = startTime - new Date().getTime();
 			if(sleepFor > 0){
@@ -168,6 +168,15 @@ public class MarketDataService implements Runnable{
 			              __logger.debug(cind.s_EXCH_SEG + "," + cind.s_SYMBOL);
 					}
 				}
+
+                else if(oData.iMsgCode == 10){
+                    // Market Status
+                    CMarketStat oObj = (CMarketStat)oData.oStreamObj;
+                   // if(oObj.sNse != null && oObj.sNse.trim().toUpperCase().contains("CLOSE")){
+                        __logger.debug("Market closed. " + oObj.sNse.trim());
+                  //      System.exit(0);
+                  //  }
+                }
 				
 				else{
 					__logger.warn("Unknown code: " + oData.iMsgCode);					

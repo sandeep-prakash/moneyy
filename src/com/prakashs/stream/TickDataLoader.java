@@ -115,7 +115,11 @@ public class TickDataLoader implements Runnable {
                     while(tick <= tickData.tick - 1000){
                         String aLine = new StringBuffer(tickData.scrip).append(",").append(tick).append(",").
                                 append(lastTick).append("\n").toString();
-                        fileWriter.write(aLine);
+
+                        if(lastTick.bidQty > 0 && lastTick.bid > 0 && lastTick.askQty > 0 && lastTick.ask > 0)
+                        {
+                            fileWriter.write(aLine);
+                        }
 
                         if(tickData.scrip.equals(SCRIP_TO_TEST)){
                             testOutput.write(aLine);
@@ -128,7 +132,10 @@ public class TickDataLoader implements Runnable {
             }else{
                 String aLine = new StringBuffer(tickData.scrip).append(",").append(tickData.tick).append(",").
                         append(tickData).append("\n").toString();
-                fileWriter.write(aLine);
+                if(tickData.bidQty > 0 && tickData.bid > 0 && tickData.askQty > 0 && tickData.ask > 0)
+                {
+                    fileWriter.write(aLine);
+                }
                 if(tickData.scrip.equals(SCRIP_TO_TEST)){
                     testOutput.write(aLine);
                 }
